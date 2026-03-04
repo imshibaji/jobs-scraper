@@ -9,8 +9,8 @@ CORS(app)  # This enables CORS for all routes and all origins
 def index():
     return render_template('home.html')
 
-@app.route('/jobs', methods=['GET'])
-def jobs():
+@app.route('/api/jobs', methods=['GET'])
+def jobs_api():
     search = request.args.get('search', 'software engineer')
     location = request.args.get('location', 'remote')
     country = request.args.get('country', 'india')

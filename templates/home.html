@@ -123,7 +123,7 @@
 
             try {
                 // Change this URL to your Flask API endpoint
-                const response = await fetch(`/jobs?search=${search}&location=${location}`);
+                const response = await fetch(`/api/jobs?search=${search}&location=${location}`);
                 const data = await response.json();
                 
                 // FILTER: Only keep jobs where description is NOT empty
