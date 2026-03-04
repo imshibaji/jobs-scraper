@@ -8,7 +8,7 @@ app = Flask(__name__)
 def index():
     return {"message": "Hello, World! Jobs Scraper is running. Use /scrape endpoint."}
 
-@app.route('/scrape', methods=['GET'])
+@app.route('/jobs', methods=['GET'])
 def scrape():
     search = request.args.get('search', 'software engineer')
     location = request.args.get('location', 'Kolkata, West Bengal, India')
@@ -19,7 +19,7 @@ def scrape():
     
     try:
         jobs = scrape_jobs(
-            site_name=["indeed", "linkedin", "zip_recruiter", "google"],
+            site_name=["indeed", "linkedin", "google", "zip_recruiter"],
             search_term=search,
             location=location,
             results_wanted=limit,
