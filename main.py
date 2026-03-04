@@ -1,12 +1,13 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, render_template
 from jobspy import scrape_jobs
-import pandas as pd # Ensure pandas is imported
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # This enables CORS for all routes and all origins
 
 @app.route('/')
 def index():
-    return {"message": "Hello, World! Jobs Scraper is running. Use /jobs endpoint."}
+    return render_template('home.html')
 
 @app.route('/jobs', methods=['GET'])
 def scrape():

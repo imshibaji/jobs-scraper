@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JobHunt | Find Your Next Role</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <header class="relative bg-indigo-900 py-20 px-6">
+        <div class="absolute inset-0 overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80" class="w-full h-full object-cover opacity-20" alt="Background">
+        </div>
+        
+        <div class="relative max-w-5xl mx-auto text-center">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-6">Find Your Dream Job</h1>
+            <p class="text-xl text-indigo-100 mb-10">Discover thousands of opportunities in tech and beyond.</p>
+
+            <div class="bg-white p-2 rounded-xl shadow-2xl flex flex-col md:flex-row gap-2">
+                <div class="flex-1 flex items-center px-4 border-b md:border-b-0 md:border-r border-gray-100">
+                    <i class="fa-solid fa-magnifying-glass text-gray-400"></i>
+                    <input type="text" id="searchInput" placeholder="Job title or keywords" class="w-full p-4 outline-none text-gray-700">
+                </div>
+                <div class="flex-1 flex items-center px-4">
+                    <i class="fa-solid fa-location-dot text-gray-400"></i>
+                    <input type="text" id="locationInput" placeholder="Location" class="w-full p-4 outline-none text-gray-700">
+                </div>
+                <button onclick="fetchJobs()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-lg font-bold transition-all">
+                    Search Jobs
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-6 py-12">
+        <div class="flex justify-between items-center mb-8">
+            <h2 class="text-2xl font-bold text-gray-800" id="resultsCount">Latest Jobs</h2>
+            <div class="flex gap-4">
+                <select id="siteFilter" onchange="applyFilters()" class="border-gray-300 rounded-lg p-2 text-sm outline-none">
+                    <option value="all">All Sites</option>
+                    <option value="indeed">Indeed</option>
+                    <option value="linkedin">LinkedIn</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="jobGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="col-span-full text-center py-20">
+                <i class="fa-solid fa-circle-notch fa-spin text-4xl text-indigo-600 mb-4"></i>
+                <p class="text-gray-500">Search for jobs to see results...</p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let allJobs = [];
+
+        async function fetchJobs() {
+            const search = document.getElementById('searchInput').value || 'software engineer';
+            const location = document.getElementById('locationInput').value || 'India';
+            const grid = document.getElementById('jobGrid');
+            
+            grid.innerHTML = `<div class="col-span-full text-center py-20"><i class="fa-solid fa-circle-notch fa-spin text-4xl text-indigo-600"></i></div>`;
+
+            try {
+                // Change this URL to your Flask API endpoint
+                const response = await fetch(`http://localhost:8000/jobs?search=${search}&location=${location}`);
+                const data = await response.json();
+                
+                // FILTER: Only keep jobs where description is NOT empty
+                allJobs = data.jobs.filter(job => job.description && job.description.trim() !== "");
+                
+                displayJobs(allJobs);
+            } catch (error) {
+                console.error("Error fetching jobs:", error);
+                grid.innerHTML = `<div class="col-span-full text-center text-red-500">Error connecting to the scraper. Make sure Flask is running.</div>`;
+            }
+        }
+
+        function displayJobs(jobs) {
+            const grid = document.getElementById('jobGrid');
+            const countLabel = document.getElementById('resultsCount');
+            
+            countLabel.innerText = `${jobs.length} Jobs Found`;
+
+            if (jobs.length === 0) {
+                grid.innerHTML = `<div class="col-span-full text-center py-20 text-gray-500">No jobs found with descriptions.</div>`;
+                return;
+            }
+
+            grid.innerHTML = jobs.map(job => `
+                <div class="bg-white border border-gray-100 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-gray-50 flex items-center justify-center overflow-hidden border border-gray-100">
+                                ${job.company_logo ? `<img src="${job.company_logo}" alt="logo">` : `<i class="fa-solid fa-building text-gray-300"></i>`}
+                            </div>
+                            <span class="text-xs font-bold uppercase px-2 py-1 rounded bg-indigo-50 text-indigo-600">${job.site}</span>
+                        </div>
+                        <h3 class="font-bold text-lg text-gray-900 mb-1 truncate">${job.title}</h3>
+                        <p class="text-indigo-600 font-medium text-sm mb-4">${job.company}</p>
+                        
+                        <div class="flex items-center gap-4 text-gray-500 text-sm mb-4">
+                            <span><i class="fa-solid fa-location-dot mr-1"></i> ${job.location}</span>
+                            ${job.is_remote ? `<span><i class="fa-solid fa-house-laptop mr-1"></i> Remote</span>` : ''}
+                        </div>
+                        
+                        <p class="text-gray-600 text-sm line-clamp-3 mb-6">
+                            ${job.description.substring(0, 150)}...
+                        </p>
+                    </div>
+
+                    <a href="${job.job_url}" target="_blank" class="block w-full text-center bg-gray-900 hover:bg-black text-white py-3 rounded-xl font-semibold transition-colors">
+                        View Details
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        function applyFilters() {
+            const site = document.getElementById('siteFilter').value;
+            if (site === 'all') {
+                displayJobs(allJobs);
+            } else {
+                const filtered = allJobs.filter(j => j.site === site);
+                displayJobs(filtered);
+            }
+        }
+
+        fetchJobs();
+    </script>
+</body>
+</html>
