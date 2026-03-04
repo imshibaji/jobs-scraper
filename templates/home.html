@@ -8,7 +8,38 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="bg-gray-50 font-sans">
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4 px-6">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="bg-indigo-600 p-2 rounded-lg">
+                    <i class="fa-solid fa-briefcase text-white text-xl"></i>
+                </div>
+                <span class="text-white font-bold text-2xl tracking-tight" id="navLogo">JobHunt</span>
+            </div>
 
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium text-indigo-100">
+                <a href="#" class="hover:text-white transition-colors">Find Jobs</a>
+                <a href="#" class="hover:text-white transition-colors">Companies</a>
+                <a href="#" class="hover:text-white transition-colors">Salaries</a>
+                <a href="#" class="hover:text-white transition-colors">Post a Job</a>
+                <button class="bg-white text-indigo-900 px-5 py-2.5 rounded-lg font-bold hover:bg-indigo-50 transition-all shadow-lg">
+                    Sign In
+                </button>
+            </div>
+
+            <button class="md:hidden text-white text-2xl" onclick="toggleMobileMenu()">
+                <i class="fa-solid fa-bars" id="menuIcon"></i>
+            </button>
+        </div>
+
+        <div id="mobileMenu" class="hidden md:hidden absolute top-full left-0 w-full bg-white shadow-xl flex flex-col p-6 gap-4 text-gray-800 font-semibold border-t">
+            <a href="#" class="hover:text-indigo-600 transition-colors">Find Jobs</a>
+            <a href="#" class="hover:text-indigo-600 transition-colors">Companies</a>
+            <a href="#" class="hover:text-indigo-600 transition-colors">Salaries</a>
+            <hr>
+            <button class="bg-indigo-600 text-white px-5 py-3 rounded-lg font-bold">Sign In</button>
+        </div>
+    </nav>
     <header class="relative bg-indigo-900 py-20 px-6">
         <div class="absolute inset-0 overflow-hidden">
             <img src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&q=80" class="w-full h-full object-cover opacity-20" alt="Background">
@@ -112,6 +143,38 @@
     </footer>
 
     <script>
+        // Toggle Mobile Menu
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const icon = document.getElementById('menuIcon');
+            menu.classList.toggle('hidden');
+            
+            // Switch icon between bars and X
+            if (menu.classList.contains('hidden')) {
+                icon.classList.replace('fa-xmark', 'fa-bars');
+            } else {
+                icon.classList.replace('fa-bars', 'fa-xmark');
+            }
+        }
+
+        // Navbar Scroll Effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            const logoText = document.getElementById('navLogo');
+            
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-violet-900', 'shadow-md', 'py-3');
+                navbar.classList.remove('py-4');
+                // navbar.style.color = "#1e1b4b"; // text-indigo-950
+                // logoText.style.color = "#1e1b4b";
+            } else {
+                navbar.classList.remove('bg-violet-900', 'shadow-md', 'py-3');
+                navbar.classList.add('py-4');
+                // navbar.style.color = "white";
+                // logoText.style.color = "white";
+            }
+        });
+
         let allJobs = [];
 
         async function fetchJobs() {
