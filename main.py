@@ -14,7 +14,7 @@ def scrape():
     search = request.args.get('search', 'software engineer')
     location = request.args.get('location', 'Kolkata, West Bengal, India')
     country = request.args.get('country', 'INDIA')
-    limit = request.args.get('limit', 20)
+    limit = request.args.get('limit', 21)
     limit = int(limit)
     ago = request.args.get('ago', 72)
     

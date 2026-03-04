@@ -54,6 +54,62 @@
         </div>
     </main>
 
+    <footer class="bg-gray-900 text-gray-300 pt-16 pb-8">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-1">
+                    <h3 class="text-white text-2xl font-bold mb-4">JobHunt<span class="text-indigo-500">.</span></h3>
+                    <p class="text-sm leading-relaxed">
+                        Connecting the world's best talent with the most innovative companies. Start your journey with us today.
+                    </p>
+                    <div class="flex gap-4 mt-6">
+                        <a href="#" class="hover:text-indigo-400 transition-colors"><i class="fa-brands fa-twitter text-xl"></i></a>
+                        <a href="#" class="hover:text-indigo-400 transition-colors"><i class="fa-brands fa-linkedin text-xl"></i></a>
+                        <a href="#" class="hover:text-indigo-400 transition-colors"><i class="fa-brands fa-github text-xl"></i></a>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Company</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">API Access</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Job Alerts</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Support</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-semibold mb-4">Stay Updated</h4>
+                    <p class="text-sm mb-4">Get the latest job openings right in your inbox.</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Email address" class="bg-gray-800 border-none rounded-l-lg px-4 py-2 w-full focus:ring-2 focus:ring-indigo-500 outline-none text-white text-sm">
+                        <button class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-r-lg transition-colors">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="border-gray-800 mb-8">
+
+            <div class="flex flex-col md:row justify-between items-center text-xs">
+                <p>&copy; 2026 JobHunt Inc. All rights reserved.</p>
+                <p class="mt-2 md:mt-0">Built by <i class="fa-solid fa-heart text-red-500"></i> Shibaji Debnath</p>
+            </div>
+        </div>
+    </footer>
+
     <script>
         let allJobs = [];
 
@@ -66,7 +122,7 @@
 
             try {
                 // Change this URL to your Flask API endpoint
-                const response = await fetch(`http://localhost:8000/jobs?search=${search}&location=${location}`);
+                const response = await fetch(`/jobs?search=${search}&location=${location}`);
                 const data = await response.json();
                 
                 // FILTER: Only keep jobs where description is NOT empty
