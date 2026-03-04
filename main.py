@@ -12,8 +12,8 @@ def index():
 @app.route('/jobs', methods=['GET'])
 def scrape():
     search = request.args.get('search', 'software engineer')
-    location = request.args.get('location', 'Kolkata, West Bengal, India')
-    country = request.args.get('country', 'INDIA')
+    location = request.args.get('location', 'remote')
+    country = request.args.get('country', 'india')
     limit = request.args.get('limit', 21)
     limit = int(limit)
     ago = request.args.get('ago', 72)
