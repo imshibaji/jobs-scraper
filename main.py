@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 from jobspy import scrape_jobs
+import pandas as pd # Ensure pandas is imported
 
 app = Flask(__name__)
 
@@ -9,7 +10,6 @@ def index():
 
 @app.route('/scrape', methods=['GET'])
 def scrape():
-    # Dynamically take parameters
     search = request.args.get('search', 'software engineer')
     location = request.args.get('location', 'Kolkata, West Bengal, India')
     country = request.args.get('country', 'INDIA')
@@ -24,12 +24,16 @@ def scrape():
             country_indeed=country,
         )
 
-        # Use to_dict instead of to_json to keep it as a Python list of objects
+        # --- THE FIX STARTS HERE ---
+        # 1. Fill NaN values with an empty string or None so JSON is valid
+        jobs = jobs.fillna("") 
+
+        # 2. Convert to list of dictionaries
         jobs_list = jobs.to_dict(orient="records")
+        # --- THE FIX ENDS HERE ---
         
-        # Build the final response object
         response = {
-            "total": len(jobs),
+            "total": len(jobs_list),
             "jobs": jobs_list
         }
 
@@ -39,5 +43,4 @@ def scrape():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    # Using a safe port (8000) to avoid browser "Unsafe Port" errors
     app.run(host='0.0.0.0', port=8000, debug=True)
