@@ -13,14 +13,17 @@ def scrape():
     search = request.args.get('search', 'software engineer')
     location = request.args.get('location', 'Kolkata, West Bengal, India')
     country = request.args.get('country', 'INDIA')
+    limit = request.args.get('limit', 10)
+    limit = int(limit)
+    ago = request.args.get('ago', 72)
     
     try:
         jobs = scrape_jobs(
             site_name=["indeed", "linkedin", "zip_recruiter", "google"],
             search_term=search,
             location=location,
-            results_wanted=10,
-            hours_old=72,
+            results_wanted=limit,
+            hours_old=ago,
             country_indeed=country,
         )
 
