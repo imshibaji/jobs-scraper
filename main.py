@@ -13,7 +13,7 @@ def scrape():
     search = request.args.get('search', 'software engineer')
     location = request.args.get('location', 'Kolkata, West Bengal, India')
     country = request.args.get('country', 'INDIA')
-    limit = request.args.get('limit', 10)
+    limit = request.args.get('limit', 20)
     limit = int(limit)
     ago = request.args.get('ago', 72)
     
@@ -27,9 +27,12 @@ def scrape():
             country_indeed=country,
         )
 
+        # This drops the entire job "dataset" if there's no description
+        jobs = jobs[jobs['description'].notna() & (jobs['description'] != "")]
+
         # --- THE FIX STARTS HERE ---
         # 1. Fill NaN values with an empty string or None so JSON is valid
-        jobs = jobs.fillna("") 
+        jobs = jobs.fillna("")
 
         # 2. Convert to list of dictionaries
         jobs_list = jobs.to_dict(orient="records")
