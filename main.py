@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return {"message": "Hello, World! Jobs Scraper is running. Use /scrape endpoint."}
+    return {"message": "Hello, World! Jobs Scraper is running. Use /jobs endpoint."}
 
 @app.route('/jobs', methods=['GET'])
 def scrape():
