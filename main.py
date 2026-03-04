@@ -10,7 +10,7 @@ def index():
     return render_template('home.html')
 
 @app.route('/jobs', methods=['GET'])
-def scrape():
+def jobs():
     search = request.args.get('search', 'software engineer')
     location = request.args.get('location', 'remote')
     country = request.args.get('country', 'india')
