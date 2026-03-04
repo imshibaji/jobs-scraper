@@ -1,5 +1,5 @@
 # পাইথনের লাইটওয়েট ভার্সন ব্যবহার করা হয়েছে
-FROM python:3.10-slim
+FROM python:3.12-slim
 
 # সার্ভারে প্রয়োজনীয় টুলস ইনস্টল করা (jobspy এর জন্য লাগতে পারে)
 RUN apt-get update && apt-get install -y \

@@ -1,5 +1,4 @@
 from flask import Flask, jsonify, request
-import json
 from jobspy import scrape_jobs
 
 app = Flask(__name__)
@@ -20,7 +19,7 @@ def scrape():
             site_name=["indeed", "linkedin", "zip_recruiter", "google"],
             search_term=search,
             location=location,
-            results_wanted=20,
+            results_wanted=10,
             hours_old=72,
             country_indeed=country,
         )
@@ -41,4 +40,4 @@ def scrape():
 
 if __name__ == '__main__':
     # Using a safe port (8000) to avoid browser "Unsafe Port" errors
-    app.run(host='0.0.0.0', port=8000)
+    app.run(host='0.0.0.0', port=8000, debug=True)
